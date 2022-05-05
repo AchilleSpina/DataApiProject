@@ -1,9 +1,8 @@
 package com.data.service;
 
-import com.data.model.UserMessage;
-import com.data.repository.UserMessageRepository;
+import com.data.model.CustomerMessage;
+import com.data.repository.CustomerMessageRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +11,11 @@ import org.springframework.stereotype.Service;
 public class DataServiceImpl implements DataService{
 
     @Autowired
-    UserMessageRepository userMessageRepository;
+    CustomerMessageRepository customerMessageRepository;
+
     @Override
-    public void pushCustomerMessage(UserMessage userMessage) {
-        log.info("[Service] Push customer message : " + userMessage);
-        userMessageRepository.insert(userMessage);
+    public void pushCustomerMessage(CustomerMessage customerMessage) {
+        log.info("[Service] Push customer message : " + customerMessage);
+        customerMessageRepository.insert(customerMessage);
     }
 }

@@ -8,12 +8,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Getter
 @Setter
 @ToString
-@Document("UserMessages")
-public class UserMessage {
+@Document("CustomerMessages")
+public class CustomerMessage {
     String customerId;
     String dialogId;
     String text;
     String language;
-    //TODO ADD date and its management
-    //Date date;
 }

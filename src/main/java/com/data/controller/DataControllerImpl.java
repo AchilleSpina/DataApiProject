@@ -1,7 +1,8 @@
 package com.data.controller;
 
-import com.data.model.UserMessage;
+import com.data.model.CustomerMessage;
 import com.data.service.DataService;
+import jdk.jfr.Description;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,14 +19,15 @@ public class DataControllerImpl implements DataController{
     DataService dataService;
 
     @Override
+    @Description("This API endpoint must be used to store the customer message.")
     @PostMapping("/data/{customerId}/{dialogId}")
     public ResponseEntity<String> pushCustomerMessage(@PathVariable("customerId") String customerId,
                                                       @PathVariable("dialogId") String dialogId,
-                                                      @RequestBody UserMessage userMessage){
-        userMessage.setCustomerId(customerId);
-        userMessage.setDialogId(dialogId);
-        log.info("[Controller] Push customer message : " +userMessage );
-        dataService.pushCustomerMessage(userMessage);
-        return new ResponseEntity<>("", HttpStatus.OK);
+                                                      @RequestBody CustomerMessage customerMessage){
+        customerMessage.setCustomerId(customerId);
+        customerMessage.setDialogId(dialogId);
+        log.info("[Controller] Push customer message : " +customerMessage );
+        dataService.pushCustomerMessage(customerMessage);
+        return new ResponseEntity<>("Pushed customer message", HttpStatus.OK);
     }
 }

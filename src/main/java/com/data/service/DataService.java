@@ -1,7 +1,7 @@
 package com.data.service;
 
-import com.data.model.UserMessage;
+import com.data.model.CustomerMessage;
 
 public interface DataService {
-    void pushCustomerMessage(UserMessage userMessage);
+    void pushCustomerMessage(CustomerMessage customerMessage);
 }
