@@ -29,9 +29,11 @@ public class DataControllerImpl implements DataController{
                                                       @RequestBody  Map<String,String> body){
 
         if(!body.containsKey("text") || body.get("text").isBlank()){
+            log.info("[Controller] Push customer message : Missing/Blank language text in Request Body");
             return new ResponseEntity<>("Missing/Blank text field in Request Body", HttpStatus.BAD_REQUEST);
         }
         if(!body.containsKey("language") || body.get("language").isBlank()){
+            log.info("[Controller] Push customer message : Missing/Blank language field in Request Body");
             return new ResponseEntity<>("Missing/Blank language field in Request Body", HttpStatus.BAD_REQUEST);
         }
         CustomerMessage customerMessage=CustomerMessage.builder()
