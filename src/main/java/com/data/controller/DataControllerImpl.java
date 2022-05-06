@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @Slf4j
 public class DataControllerImpl implements DataController{
@@ -23,11 +26,22 @@ public class DataControllerImpl implements DataController{
     @PostMapping("/data/{customerId}/{dialogId}")
     public ResponseEntity<String> pushCustomerMessage(@PathVariable("customerId") String customerId,
                                                       @PathVariable("dialogId") String dialogId,
-                                                      @RequestBody CustomerMessage customerMessage){
-        customerMessage.setCustomerId(customerId);
-        customerMessage.setDialogId(dialogId);
+                                                      @RequestBody  Map<String,String> body){
+
+        if(!body.containsKey("text") || body.get("text").isBlank()){
+            return new ResponseEntity<>("Missing/Blank text field in Request Body", HttpStatus.BAD_REQUEST);
+        }
+        if(!body.containsKey("language") || body.get("language").isBlank()){
+            return new ResponseEntity<>("Missing/Blank language field in Request Body", HttpStatus.BAD_REQUEST);
+        }
+        CustomerMessage customerMessage=CustomerMessage.builder()
+                .customerId(customerId)
+                .dialogId(dialogId)
+                .text(body.get("text"))
+                .language(body.get("language"))
+                .build();
         log.info("[Controller] Push customer message : " +customerMessage );
         dataService.pushCustomerMessage(customerMessage);
-        return new ResponseEntity<>("Pushed customer message", HttpStatus.OK);
+        return new ResponseEntity<>("Saved:" + customerMessage, HttpStatus.OK);
     }
 }
