@@ -20,7 +20,7 @@ import java.util.Map;
 @Slf4j
 public class DataControllerImpl implements DataController{
     @Autowired
-    DataService dataService;
+    private DataService dataService;
 
     @Override
     @Description("This API endpoint must be used to store the customer message.")
@@ -58,10 +58,11 @@ public class DataControllerImpl implements DataController{
             return new ResponseEntity<>("Only Boolean value needed in Body for the consent! ", HttpStatus.BAD_REQUEST);
         }
 
-        log.info("[Controller] Dialog id: "+dialogId+"  consent to store : "+ consent);
-        if(!Boolean.parseBoolean(consent)){
-            ;//TODO Develop Data service feature to delete the customer message with dialogId
+        log.info("[Controller] Dialog id: "+dialogId+"  Consent: "+ consent);
+        if(Boolean.parseBoolean(consent)){
+            return new ResponseEntity<>("Dialog id: "+dialogId+"  Consent: "+ consent, HttpStatus.OK);
         }
-       return new ResponseEntity<>("Dialog id: "+dialogId+"  Consent to store : "+ consent, HttpStatus.OK);
+        Integer documentDeleted=dataService.deleteCustomerMessageByDialogId(dialogId);
+       return new ResponseEntity<>("Dialog id: "+dialogId+"  Consent: "+ consent+ "Document deleted: "+documentDeleted.toString(), HttpStatus.OK);
     }
 }

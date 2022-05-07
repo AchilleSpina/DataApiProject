@@ -11,11 +11,19 @@ import org.springframework.stereotype.Service;
 public class DataServiceImpl implements DataService{
 
     @Autowired
-    CustomerMessageRepository customerMessageRepository;
+    private CustomerMessageRepository customerMessageRepository;
 
     @Override
     public void pushCustomerMessage(CustomerMessage customerMessage) {
         log.info("[Service] Push customer message : " + customerMessage);
         customerMessageRepository.insert(customerMessage);
+    }
+
+    @Override
+    public Integer deleteCustomerMessageByDialogId(String dialogId) {
+        log.info("[Service] Delete Customer message with DialogId : " + dialogId);
+        Integer documenteDeleted=customerMessageRepository.deleteByDialogId(dialogId);
+        log.info("[Service] Number of document deleted: "+documenteDeleted.toString()+" with DialogId : " + dialogId);
+        return documenteDeleted;
     }
 }

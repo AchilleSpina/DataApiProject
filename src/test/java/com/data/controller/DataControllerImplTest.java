@@ -17,11 +17,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class DataControllerImplTest {
     private AutoCloseable closeable;
     @Mock
-    DataService dataService;
+    private DataService dataService;
 
     @InjectMocks
     @Spy
-    DataControllerImpl dataController;
+    private DataControllerImpl dataController;
 
     @BeforeEach
     public void setUp(){
@@ -49,6 +49,29 @@ class DataControllerImplTest {
         hashmap.put("language","Spina");
         Mockito.doNothing().when(dataService).pushCustomerMessage(Mockito.any(CustomerMessage.class));
         ResponseEntity<String> response = dataController.pushCustomerMessage("customer","dialog",hashmap);
+        Assertions.assertTrue(response.getStatusCode()== HttpStatus.OK);
+    }
+
+    @Test
+    void consentDialog_MissingConsent() {
+        ResponseEntity<String> response = dataController.consentDialog("dialogid","");
+        Assertions.assertTrue(response.getStatusCode()== HttpStatus.BAD_REQUEST);
+    }
+    @Test
+    void consentDialog_NotBooleanConsent() {
+        ResponseEntity<String> response = dataController.consentDialog("dialogid","AchilleSpina");
+        Assertions.assertTrue(response.getStatusCode()== HttpStatus.BAD_REQUEST);
+    }
+    @Test
+    void consentDialog_TrueConsent_Right() {
+        Mockito.when(dataService.deleteCustomerMessageByDialogId(Mockito.any(String.class))).thenReturn(1);
+        ResponseEntity<String> response = dataController.consentDialog("dialogid","true");
+        Assertions.assertTrue(response.getStatusCode()== HttpStatus.OK);
+    }
+    @Test
+    void consentDialog_FalseConsent_Right() {
+        Mockito.when(dataService.deleteCustomerMessageByDialogId(Mockito.any(String.class))).thenReturn(1);
+        ResponseEntity<String> response = dataController.consentDialog("dialogid","false");
         Assertions.assertTrue(response.getStatusCode()== HttpStatus.OK);
     }
 }
