@@ -6,6 +6,7 @@ import jdk.jfr.Description;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,6 +45,23 @@ public class DataControllerImpl implements DataController{
                 .build();
         log.info("[Controller] Push customer message : " +customerMessage );
         dataService.pushCustomerMessage(customerMessage);
-        return new ResponseEntity<>("Saved:" + customerMessage, HttpStatus.OK);
+        return new ResponseEntity<>("Saved: " + customerMessage, HttpStatus.OK);
+    }
+
+    @Override
+    @Description("This API endpoint must be used to delete the customer messages with dialog id by consent.")
+    @PostMapping("/consents/{dialogId}")
+    public ResponseEntity<String> consentDialog(@PathVariable("dialogId") String dialogId,
+                                                      @RequestBody  String consent){
+        if(!consent.equalsIgnoreCase("true") && !consent.equalsIgnoreCase("false")){
+            log.info("[Controller] Consent Dialog : Missing boolean consent in Request Body");
+            return new ResponseEntity<>("Only Boolean value needed in Body for the consent! ", HttpStatus.BAD_REQUEST);
+        }
+
+        log.info("[Controller] Dialog id: "+dialogId+"  consent to store : "+ consent);
+        if(!Boolean.parseBoolean(consent)){
+            ;//TODO Develop Data service feature to delete the customer message with dialogId
+        }
+       return new ResponseEntity<>("Dialog id: "+dialogId+"  Consent to store : "+ consent, HttpStatus.OK);
     }
 }
