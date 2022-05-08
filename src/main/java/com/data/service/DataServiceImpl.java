@@ -4,6 +4,8 @@ import com.data.model.CustomerMessage;
 import com.data.repository.CustomerMessageRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -37,4 +39,12 @@ public class DataServiceImpl implements DataService{
         log.info("[Service] Number of document updated: "+documenteUpdated.toString()+" with DialogId : " + dialogId);
         return documenteUpdated;
     }
+
+    @Override
+    public Page<CustomerMessage> getCustomerMessageBylanguageOrCustomerId(String language, String customerId, Pageable pageable) {
+        //TODO Develop logic for get customer message
+        return null;
+    }
+
+
 }
