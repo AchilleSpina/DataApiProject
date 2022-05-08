@@ -22,13 +22,10 @@ public class DataServiceImpl implements DataService{
     }
 
     @Override
-    public Integer deleteCustomerMessageByDialogId(String dialogId) {
+    public Integer deleteCustomerMessageByDialogIdAndConsent(String dialogId,Boolean consent) {
         log.info("[Service] Delete Customer message with DialogId : " + dialogId);
-        Integer documenteDeleted=0;
-        if (customerMessageRepository.existsByDialogIdAndConsent(dialogId,false)){
-            documenteDeleted=customerMessageRepository.deleteByDialogId(dialogId);
-            log.info("[Service] Number of document deleted: "+documenteDeleted.toString()+" with DialogId : " + dialogId);
-        }
+        Integer documenteDeleted=customerMessageRepository.deleteByDialogIdAndConsent(dialogId,consent);
+        log.info("[Service] Number of document deleted: "+documenteDeleted.toString()+" with DialogId : " + dialogId);
         return documenteDeleted;
     }
 
@@ -41,15 +38,15 @@ public class DataServiceImpl implements DataService{
     }
 
     @Override
-    public Page<CustomerMessage> getCustomerMessageBylanguageOrCustomerId(String language, String customerId, Pageable pageable) {
-        log.info("[Service] Find Customer message with customerId : " + customerId+" and language:" + language);
+    public Page<CustomerMessage> getCustomerMessageByConsentAndlanguageOrCustomerId(String language,String customerId,Boolean consent, Pageable pageable) {
+        log.info("[Service] Find Customer message CustomerId:" + customerId+" Language:" + language+" Consent:"+consent);
         if (language!=null  && customerId!=null)
-            return customerMessageRepository.findByCustomerIdAndLanguageAndConsentOrderByDateDesc(customerId,language,true,pageable);
+            return customerMessageRepository.findByCustomerIdAndLanguageAndConsentOrderByDateDesc(customerId,language,consent,pageable);
         if (language!=null )
-            return customerMessageRepository.findByLanguageAndConsentOrderByDateDesc(language,true,pageable);
+            return customerMessageRepository.findByLanguageAndConsentOrderByDateDesc(language,consent,pageable);
         if (customerId!=null )
-            return customerMessageRepository.findByCustomerIdAndConsentOrderByDateDesc(customerId,true,pageable);
-        return customerMessageRepository.findByConsentOrderByDateDesc(true,pageable);
+            return customerMessageRepository.findByCustomerIdAndConsentOrderByDateDesc(customerId,consent,pageable);
+        return customerMessageRepository.findByConsentOrderByDateDesc(consent,pageable);
     }
 
 

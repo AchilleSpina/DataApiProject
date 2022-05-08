@@ -10,9 +10,8 @@ import java.util.List;
 
 @Repository
 public interface CustomerMessageRepository extends MongoRepository<CustomerMessage,String>,CustomerMessageRepositoryCustom {
-    Integer deleteByDialogId(String dialogId);
+    Integer deleteByDialogIdAndConsent(String dialogId,Boolean consent);
     List<CustomerMessage> findByDialogId(String dialogId);
-    Boolean existsByDialogIdAndConsent(String dialogId,Boolean consent);
     Page<CustomerMessage> findByConsentOrderByDateDesc(Boolean consent, Pageable pageable);
     Page<CustomerMessage> findByCustomerIdAndConsentOrderByDateDesc(String customerId, Boolean consent, Pageable pageable);
     Page<CustomerMessage> findByLanguageAndConsentOrderByDateDesc(String language, Boolean consent, Pageable pageable);

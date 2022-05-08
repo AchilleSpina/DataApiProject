@@ -69,13 +69,13 @@ class DataControllerImplTest {
     }
     @Test
     void consentDialog_TrueConsent_Right() {
-        Mockito.when(dataService.deleteCustomerMessageByDialogId(Mockito.any(String.class))).thenReturn(1);
+        Mockito.when(dataService.deleteCustomerMessageByDialogIdAndConsent(Mockito.any(String.class),Mockito.any(Boolean.class))).thenReturn(1);
         ResponseEntity<String> response = dataController.consentDialog("dialogid","true");
         Assertions.assertTrue(response.getStatusCode()== HttpStatus.OK);
     }
     @Test
     void consentDialog_FalseConsent_Right() {
-        Mockito.when(dataService.deleteCustomerMessageByDialogId(Mockito.any(String.class))).thenReturn(1);
+        Mockito.when(dataService.deleteCustomerMessageByDialogIdAndConsent(Mockito.any(String.class),Mockito.any(Boolean.class))).thenReturn(1);
         ResponseEntity<String> response = dataController.consentDialog("dialogid","false");
         Assertions.assertTrue(response.getStatusCode()== HttpStatus.OK);
     }
@@ -92,7 +92,7 @@ class DataControllerImplTest {
     @Test
     void getCustomerMessage_Right() {
         List<CustomerMessage> customerMessage = new ArrayList<>();
-        Mockito.when(dataService.getCustomerMessageBylanguageOrCustomerId(Mockito.any(String.class),Mockito.any(String.class),Mockito.any(Pageable.class)))
+        Mockito.when(dataService.getCustomerMessageByConsentAndlanguageOrCustomerId(Mockito.any(String.class),Mockito.any(String.class),Mockito.any(Boolean.class),Mockito.any(Pageable.class)))
                 .thenReturn(new PageImpl<>(customerMessage));
         ResponseEntity<Page<CustomerMessage>> response = dataController.getCustomerMessage("EN","Achille",0,1);
         Assertions.assertTrue(response.getStatusCode()== HttpStatus.OK);

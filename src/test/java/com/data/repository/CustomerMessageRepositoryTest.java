@@ -50,24 +50,24 @@ class CustomerMessageRepositoryTest {
     }
 
     @Test
-    void deleteCustomerMessageByDialogId_ExistingDocumentWithDialogId(){
+    void deleteByDialogIdAndConsent_ExistingDocumentWithDialogId(){
         String dialogidTest="Achille";
         customerMessage1.setDialogId(dialogidTest);
         customerMessage2.setDialogId(dialogidTest);
         mongoTemplate.insert(customerMessage1);
         mongoTemplate.insert(customerMessage2);
         mongoTemplate.insert(customerMessage3);
-        Integer documentDeleted=customerMessageRepository.deleteByDialogId(dialogidTest);
+        Integer documentDeleted=customerMessageRepository.deleteByDialogIdAndConsent(dialogidTest,false);
         Assertions.assertEquals(documentDeleted,2);
 
     }
 
     @Test
-    void deleteCustomerMessageByDialogId_NotExistingDocumentWithDialogId(){
+    void deleteByDialogIdAndConsent_NotExistingDocumentWithDialogId(){
         String dialogidTest="Achille";
         customerMessage1.setDialogId(dialogidTest);
         mongoTemplate.insert(customerMessage1);
-        Integer documentDeleted=customerMessageRepository.deleteByDialogId("DialogIdNotPresent");
+        Integer documentDeleted=customerMessageRepository.deleteByDialogIdAndConsent("DialogIdNotPresent",false);
         Assertions.assertEquals(documentDeleted,0);
     }
 
@@ -102,18 +102,6 @@ class CustomerMessageRepositoryTest {
 
     }
 
-    @Test
-    void existDocument_withDialogIdAndConsent(){
-        //Insert a document
-        String dialogidTest="Achille";
-        customerMessage1.setDialogId(dialogidTest);
-        customerMessage1.setConsent(false);
-        mongoTemplate.insert(customerMessage1);
-        Boolean condition=customerMessageRepository.existsByDialogIdAndConsent(dialogidTest,false);
-        Assertions.assertTrue(condition);
-        condition=customerMessageRepository.existsByDialogIdAndConsent(dialogidTest,true);
-        Assertions.assertFalse(condition);
-    }
 
     @Test
     void findByCustomerIdAndConsentOrderByDateDesc_checkOrdering(){

@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface DataService {
     void pushCustomerMessage(CustomerMessage customerMessage);
-    Integer deleteCustomerMessageByDialogId(String dialogId);
+    Integer deleteCustomerMessageByDialogIdAndConsent(String dialogId,Boolean consent);
     Integer updateConsetCustomerMessageByDialogId(String dialogId,Boolean consent);
-    Page<CustomerMessage> getCustomerMessageBylanguageOrCustomerId(String language, String customerId, Pageable pageable);
+    Page<CustomerMessage> getCustomerMessageByConsentAndlanguageOrCustomerId(String language,String customerId,Boolean content, Pageable pageable);
 }

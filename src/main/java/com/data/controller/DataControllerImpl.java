@@ -61,7 +61,7 @@ public class DataControllerImpl implements DataController{
             Integer documentUpdated=dataService.updateConsetCustomerMessageByDialogId(dialogId,true);
             return new ResponseEntity<>("Dialog id: "+dialogId+"  Consent: "+ consent+" Document updated: "+documentUpdated.toString(), HttpStatus.OK);
         }else{
-            Integer documentDeleted=dataService.deleteCustomerMessageByDialogId(dialogId);
+            Integer documentDeleted=dataService.deleteCustomerMessageByDialogIdAndConsent(dialogId,false);
             return new ResponseEntity<>("Dialog id: "+dialogId+"  Consent: "+ consent+ " Document deleted: "+documentDeleted.toString(), HttpStatus.OK);
         }
     }
@@ -83,7 +83,7 @@ public class DataControllerImpl implements DataController{
         }
         Pageable pageable = PageRequest.of(page,size, Sort.by("date").descending());
         log.info("[Controller] Retrive Customer Message");
-        Page<CustomerMessage> customerMessagePage = dataService.getCustomerMessageBylanguageOrCustomerId(language,customerId,pageable);
+        Page<CustomerMessage> customerMessagePage = dataService.getCustomerMessageByConsentAndlanguageOrCustomerId(language,customerId,true,pageable);
         return  new ResponseEntity<>(customerMessagePage,HttpStatus.OK);
     }
 }
