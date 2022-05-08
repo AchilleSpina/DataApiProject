@@ -6,10 +6,15 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -72,6 +77,24 @@ class DataControllerImplTest {
     void consentDialog_FalseConsent_Right() {
         Mockito.when(dataService.deleteCustomerMessageByDialogId(Mockito.any(String.class))).thenReturn(1);
         ResponseEntity<String> response = dataController.consentDialog("dialogid","false");
+        Assertions.assertTrue(response.getStatusCode()== HttpStatus.OK);
+    }
+    @Test
+    void getCustomerMessage_BlankCustomer() {
+        ResponseEntity<Page<CustomerMessage>> response = dataController.getCustomerMessage("EN","",1,1);
+        Assertions.assertTrue(response.getStatusCode()== HttpStatus.BAD_REQUEST);
+    }
+    @Test
+    void getCustomerMessage_BlankLanguage() {
+        ResponseEntity<Page<CustomerMessage>> response = dataController.getCustomerMessage("","Achille",1,1);
+        Assertions.assertTrue(response.getStatusCode()== HttpStatus.BAD_REQUEST);
+    }
+    @Test
+    void getCustomerMessage_Right() {
+        List<CustomerMessage> customerMessage = new ArrayList<>();
+        Mockito.when(dataService.getCustomerMessageBylanguageOrCustomerId(Mockito.any(String.class),Mockito.any(String.class),Mockito.any(Pageable.class)))
+                .thenReturn(new PageImpl<>(customerMessage));
+        ResponseEntity<Page<CustomerMessage>> response = dataController.getCustomerMessage("EN","Achille",0,1);
         Assertions.assertTrue(response.getStatusCode()== HttpStatus.OK);
     }
 }
