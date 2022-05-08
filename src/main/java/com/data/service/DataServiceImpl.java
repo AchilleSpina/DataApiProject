@@ -42,8 +42,14 @@ public class DataServiceImpl implements DataService{
 
     @Override
     public Page<CustomerMessage> getCustomerMessageBylanguageOrCustomerId(String language, String customerId, Pageable pageable) {
-        //TODO Develop logic for get customer message
-        return null;
+        log.info("[Service] Find Customer message with customerId : " + customerId+" and language:" + language);
+        if (language!=null  && customerId!=null)
+            return customerMessageRepository.findByCustomerIdAndLanguageAndConsentOrderByDateDesc(customerId,language,true,pageable);
+        if (language!=null )
+            return customerMessageRepository.findByLanguageAndConsentOrderByDateDesc(language,true,pageable);
+        if (customerId!=null )
+            return customerMessageRepository.findByCustomerIdAndConsentOrderByDateDesc(customerId,true,pageable);
+        return customerMessageRepository.findByConsentOrderByDateDesc(true,pageable);
     }
 
 
