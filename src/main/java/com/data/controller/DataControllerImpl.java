@@ -60,9 +60,11 @@ public class DataControllerImpl implements DataController{
 
         log.info("[Controller] Dialog id: "+dialogId+"  Consent: "+ consent);
         if(Boolean.parseBoolean(consent)){
-            return new ResponseEntity<>("Dialog id: "+dialogId+"  Consent: "+ consent, HttpStatus.OK);
+            Integer documentUpdated=dataService.updateConsetCustomerMessageByDialogId(dialogId,true);
+            return new ResponseEntity<>("Dialog id: "+dialogId+"  Consent: "+ consent+" Document updated: "+documentUpdated.toString(), HttpStatus.OK);
+        }else{
+            Integer documentDeleted=dataService.deleteCustomerMessageByDialogId(dialogId);
+            return new ResponseEntity<>("Dialog id: "+dialogId+"  Consent: "+ consent+ " Document deleted: "+documentDeleted.toString(), HttpStatus.OK);
         }
-        Integer documentDeleted=dataService.deleteCustomerMessageByDialogId(dialogId);
-       return new ResponseEntity<>("Dialog id: "+dialogId+"  Consent: "+ consent+ "Document deleted: "+documentDeleted.toString(), HttpStatus.OK);
     }
 }

@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 @DataMongoTest
 class CustomerMessageRepositoryTest {
@@ -67,6 +69,37 @@ class CustomerMessageRepositoryTest {
         mongoTemplate.insert(customerMessage3);
         Integer documentDeleted=customerMessageRepository.deleteByDialogId("DialogIdNotPresent");
         Assertions.assertEquals(documentDeleted,0);
+
+    }
+
+    @Test
+    void updateCustomerMessageByDialogId_ExistingDocumentWithDialogId(){
+        //Insert a document
+        String dialogidTest="Achille";
+        customerMessage1.setDialogId(dialogidTest);
+        customerMessage1.setConsent(false);
+        mongoTemplate.insert(customerMessage1);
+        mongoTemplate.insert(customerMessage2);
+        //Update the document
+        Boolean consent=true;
+        Integer documentUpdated=customerMessageRepository.updateConsentByDialogId(dialogidTest,consent);
+        //Check
+        List<CustomerMessage> customerMessageList = customerMessageRepository.findByDialogId(dialogidTest);
+        Assertions.assertEquals(customerMessageList.get(0).getConsent(),consent);
+        Assertions.assertEquals(documentUpdated,1);
+    }
+
+    @Test
+    void updateCustomerMessageByDialogId_NotExistingDocumentWithDialogId(){
+        //Insert a document
+        String dialogidTest="Achille";
+        customerMessage1.setDialogId(dialogidTest);
+        customerMessage1.setConsent(false);
+        mongoTemplate.insert(customerMessage1);
+        //Update a no existring document
+        Integer documentUpdated=customerMessageRepository.updateConsentByDialogId("DialogIdNotPresent",true);
+        //Check
+        Assertions.assertEquals(documentUpdated,0);
 
     }
 

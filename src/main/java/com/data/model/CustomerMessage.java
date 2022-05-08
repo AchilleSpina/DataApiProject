@@ -18,6 +18,8 @@ public class CustomerMessage {
     String dialogId;
     String text;
     String language;
+    @Builder.Default
+    Boolean consent=false;
     @CreatedDate
     Date date;
 }
