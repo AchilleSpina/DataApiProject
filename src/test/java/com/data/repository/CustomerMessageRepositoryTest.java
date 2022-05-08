@@ -62,14 +62,9 @@ class CustomerMessageRepositoryTest {
     void deleteCustomerMessageByDialogId_NotExistingDocumentWithDialogId(){
         String dialogidTest="Achille";
         customerMessage1.setDialogId(dialogidTest);
-        customerMessage2.setDialogId(dialogidTest);
-        customerMessage3.setDialogId(dialogidTest);
         mongoTemplate.insert(customerMessage1);
-        mongoTemplate.insert(customerMessage2);
-        mongoTemplate.insert(customerMessage3);
         Integer documentDeleted=customerMessageRepository.deleteByDialogId("DialogIdNotPresent");
         Assertions.assertEquals(documentDeleted,0);
-
     }
 
     @Test
@@ -101,6 +96,19 @@ class CustomerMessageRepositoryTest {
         //Check
         Assertions.assertEquals(documentUpdated,0);
 
+    }
+
+    @Test
+    void existCondition(){
+        //Insert a document
+        String dialogidTest="Achille";
+        customerMessage1.setDialogId(dialogidTest);
+        customerMessage1.setConsent(false);
+        mongoTemplate.insert(customerMessage1);
+        Boolean condition=customerMessageRepository.existsByDialogIdAndConsent(dialogidTest,false);
+        Assertions.assertTrue(condition);
+        condition=customerMessageRepository.existsByDialogIdAndConsent(dialogidTest,true);
+        Assertions.assertFalse(condition);
     }
 
 }

@@ -10,4 +10,5 @@ import java.util.List;
 public interface CustomerMessageRepository extends MongoRepository<CustomerMessage,String>,CustomerMessageRepositoryCustom {
     Integer deleteByDialogId(String dialogId);
     List<CustomerMessage> findByDialogId(String dialogId);
+    Boolean existsByDialogIdAndConsent(String dialogId,Boolean consent);
 }

@@ -22,8 +22,11 @@ public class DataServiceImpl implements DataService{
     @Override
     public Integer deleteCustomerMessageByDialogId(String dialogId) {
         log.info("[Service] Delete Customer message with DialogId : " + dialogId);
-        Integer documenteDeleted=customerMessageRepository.deleteByDialogId(dialogId);
-        log.info("[Service] Number of document deleted: "+documenteDeleted.toString()+" with DialogId : " + dialogId);
+        Integer documenteDeleted=0;
+        if (customerMessageRepository.existsByDialogIdAndConsent(dialogId,false)){
+            documenteDeleted=customerMessageRepository.deleteByDialogId(dialogId);
+            log.info("[Service] Number of document deleted: "+documenteDeleted.toString()+" with DialogId : " + dialogId);
+        }
         return documenteDeleted;
     }
 
