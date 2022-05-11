@@ -33,8 +33,8 @@ public class DataControllerImpl implements DataController{
     @Override
     @Operation(description = "This endpoint allows to store the customer messages.",
             responses = {
-                    @ApiResponse(responseCode = "200",description = "Success", content=@Content(mediaType = "String")),
-                    @ApiResponse(responseCode = "400",description = "Invalid input", content=@Content(mediaType = "String")),
+                    @ApiResponse(responseCode = "200",description = "Success", content=@Content),
+                    @ApiResponse(responseCode = "400",description = "Invalid input", content=@Content),
                     @ApiResponse(responseCode = "500",description = "Internal server error", content=@Content),
 
             }
@@ -67,8 +67,8 @@ public class DataControllerImpl implements DataController{
     @Override
     @Operation(description = "This endpoint must be used to update the consent of customer messages by dialog id. If false it should delete the customer's data.",
             responses = {
-                    @ApiResponse(responseCode = "200",description = "Success", content=@Content(mediaType = "String")),
-                    @ApiResponse(responseCode = "400",description = "Invalid input", content=@Content(mediaType = "String")),
+                    @ApiResponse(responseCode = "200",description = "Success", content=@Content),
+                    @ApiResponse(responseCode = "400",description = "Invalid input", content=@Content),
                     @ApiResponse(responseCode = "500",description = "Internal server error", content=@Content),
 
             }
